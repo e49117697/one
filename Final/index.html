@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期末專案</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<script src="assets/js/cart.js" defer></script>
+<script src="assets/js/page.js" defer></script>
+<script src="assets/js/profile.js" defer></script>
+<script src="assets/js/rating.js" defer></script>
+<body>
+  <!-- 導覽列 -->
+  <header>
+    <h1>MyClothes買衣網</h1>
+    <nav>
+      <ul>
+        <li data-target="home">首頁</li>
+        <li class="dropdown" data-target="product">
+          商品
+          <ul class="dropdown-menu">
+            <li data-category="all">全部</li>
+            <li data-category="top">上衣</li>
+            <li data-category="bottom">下身</li>
+            <li data-category="accessories">配件</li>            
+          </ul>
+        </li>
+        <li data-target="about">關於我們</li>
+        <li id="cartBtn">購物車<img src="assets/images/icon/cart.png" width="18" height="18"></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons">
+      
+      <button id="profileBtn">會員資料</button>
+      <button id="loginBtn">登入</button>
+      <button id="registerBtn">註冊</button>
+    </div>
+  </header>
+
+
+  <!-- 登入介面 -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" style="color: white;">關閉</span>
+      <h2>會員登入</h2>
+      <form id="loginForm">
+          <label for="username">帳號：</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">密碼：</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit">登入</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 註冊介面 -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn register-close-btn" style="color: white;">關閉</span>
+      <h2>註冊會員</h2>
+      <form id="registerForm">
+        <label for="regUsername">帳號：</label>
+        <input type="text" id="regUsername" name="regUsername" required>
+        <label for="regPassword">密碼：</label>
+        <input type="password" id="regPassword" name="regPassword" required>
+        <label for="checkPassword">確認密碼：</label>
+        <input type="password" id="checkPassword" name="checkPassword" required>
+        <button type="submit">確定</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 會員資料介面 -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn profile-close-btn" style="color: white;">關閉</span>
+        <h2>會員資料</h2>
+        <div id="memberInfo">
+          <p><strong>帳號：</strong><span id="profileUsername">尚未登入</span></p>
+          <p><strong>密碼：</strong><span id="profilePassword">尚未登入</span></p>
+        </div>
+        <div id="history">
+            <h3>消費紀錄</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>商品</th>
+                        <th>數量</th>
+                        <th>金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-02-12</td>
+                        <td>基本T恤</td>
+                        <td>2</td>
+                        <td>NT$598</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button id="logoutBtn" style="display: none;" >登出</button>
+    </div>
+  </div>
+  
+  <!-- 購物車介面 -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn cart-close-btn" style="color: white;">關閉</span>
+      <h2>購物車</h2>
+      <div id="cartItems">
+        <table>
+          <thead>
+            <tr>
+              <th>商品</th>
+              <th>單價</th>
+              <th>數量</th>
+              <th>小計</th>
+              <th>更改</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 購買資訊 -->
+          </tbody>
+        </table>
+        <h3 id="totalAmount">總金額：NT$0</h3>
+        <button onclick="buy()">購買</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+  <div id="home" class="page">
+    <!-- 廣告欄 -->
+    <div class="slideshow-container">
+      <div class="mySlides">          
+        <a href="https://www.daiker.com.tw/product?saleid=2407190003"><img src="assets/images/ad/ad1.jpg" style="width:100%"></a>          
+      </div>
+      <div class="mySlides">          
+        <a href="https://www.fumble.com.tw/products/waterproof-nylon-skirt-dark-creamy-white"><img src="assets/images/ad/ad2.jpg" style="width:100%"></a>          
+      </div>
+      <div class="mySlides">         
+        <a href="https://vanash.tw/products/carhartt-wip-asher-stripe-shirt"><img src="assets/images/ad/ad3.jpg" style="width:100%"></a>          
+      </div>
+      <div class="prev" onclick="plusSlides(-1)">❮</div>
+      <div class="next" onclick="plusSlides(1)">❯</div>
+    </div>      
+
+    <!-- 商品展示區 -->
+    <div class="container">
+      <h2>推薦商品</h2>
+      <div class="product-grid" id="productGrid">
+          <div class="product-card" data-category="top">
+              <img src="assets/images/product/shirt1.jpg" alt="商品圖片">
+              <h3>基本T恤</h3>
+              <p>舒適的日常穿著</p>
+              <p>任何時候都能穿</p>
+              <p class="price">NT$ 199</p>
+              <label for="Q-basicTshirt">數量：</label>
+              <input type="number" id="Q-basicTshirt" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('基本T恤', 199,'Q-basicTshirt')">加入購物車</button>
+              <button onclick="view('基本T恤', 'assets/images/product/shirt1.jpg', '具有柔軟滑順的特級彈性機能，無壓迫感，穿著舒適。', 199)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="bottom">
+              <img src="assets/images/product/Pants.jpg" alt="商品圖片">
+              <h3>休閒長褲</h3>
+              <p>舒適的日常穿著</p>
+              <p>方便寬鬆</p>
+              <p class="price">NT$ 599</p>
+              <label for="Q-pants">數量：</label>
+              <input type="number" id="Q-pants" value="1" min="1" style="width: 50px;">
+              <button id="ad1" onclick="addToCart('休閒長褲', 599,'Q-pants')">加入購物車</button>
+              <button onclick="view('休閒長褲', 'assets/images/product/Pants.jpg', '表面具有柔軟特性；內層材質光滑，穿著感舒適', 599)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="accessories">
+              <img src="assets/images/product/cotton_hat.jpg" alt="商品圖片">
+              <h3>毛帽</h3>
+              <p>冬季必備</p>
+              <p>毛質舒服，很抗寒</p>
+              <p class="price">NT$ 199</p>
+              <label for="Q-clothHat">數量：</label>
+              <input type="number" id="Q-clothHat" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('毛帽', 199,'Q-clothHat')">加入購物車</button>
+              <button onclick="view('毛帽', 'assets/images/product/cotton_hat.jpg', '保暖針織質料，內部再加絨配戴更舒適', 199)">查看內容</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="product" class="page">
+    <div class="container">
+      <h2>商品</h2>
+      <div class="product-grid" id="productGrid" data-category="all">
+          <div class="product-card" data-category="top">
+              <img src="assets/images/product/shirt1.jpg" alt="商品圖片">
+              <h3>基本T恤</h3>
+              <p>舒適的日常穿著</p>
+              <p>任何時候都能穿</p>
+              <p class="price">NT$ 199</p>
+              <label for="Q-basicTshirt">數量：</label>
+              <input type="number" id="Q-basicTshirt" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('基本T恤', 199,'Q-basicTshirt')">加入購物車</button>
+              <button onclick="view('基本T恤', 'assets/images/product/shirt1.jpg', '具有柔軟滑順的特級彈性機能，無壓迫感，穿著舒適。', 199)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="top">
+              <img src="assets/images/product/shirt2.jpg" alt="商品圖片">
+              <h3>條紋襯衫</h3>
+              <p>簡單線條，整齊有致</p>
+              <p class="price">NT$ 230</p>
+              <label for="Q-stripTshirt">數量：</label>
+              <input type="number" id="Q-stripTshirt" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('條紋襯衫', 230,'Q-stripTshirt')">加入購物車</button>
+              <button onclick="view('條紋襯衫', 'assets/images/product/shirt2.jpg', '使用高質感的100%極細純棉製成，觸感柔軟。', 230)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="bottom">
+              <img src="assets/images/product/Pants.jpg" alt="商品圖片">
+              <h3>休閒長褲</h3>
+              <p>舒適的日常穿著</p>
+              <p>方便寬鬆</p>
+              <p class="price">NT$ 599</p>
+              <label for="Q-pants">數量：</label>
+              <input type="number" id="Q-pants" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('休閒長褲', 599,'Q-pants')">加入購物車</button>
+              <button onclick="view('休閒長褲', 'assets/images/product/Pants.jpg', '表面具有柔軟特性；內層材質光滑，穿著感舒適。', 599)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="accessories">
+              <img src="assets/images/product/cotton_hat.jpg" alt="商品圖片">
+              <h3>毛帽</h3>
+              <p>冬季必備</p>
+              <p>毛質舒服，很抗寒</p>
+              <p class="price">NT$ 199</p>
+              <label for="Q-clothHat">數量：</label>
+              <input type="number" id="Q-clothHat" value="1" min="1" style="width: 50px;">
+              <button onclick="addToCart('毛帽', 199,'Q-clothHat')">加入購物車</button>
+              <button onclick="view('毛帽', 'assets/images/product/cotton_hat.jpg', '保暖針織質料，內部再加絨配戴更舒適', 199)">查看內容</button>
+          </div>
+          <div class="product-card" data-category="accessories">
+            <img src="assets/images/product/scarf.jpg" alt="商品圖片">
+            <h3>流蘇圍巾</h3>
+            <p>圍著暖暖ㄉ</p>
+            <p>時尚設計，增加質感</p>
+            <p class="price">NT$ 499</p>
+            <label for="Q-scarf">數量：</label>
+            <input type="number" id="Q-scarf" value="1" min="1" style="width: 50px;">
+            <button onclick="addToCart('流蘇圍巾', 499,'Q-scarf')">加入購物車</button>
+            <button onclick="view('流蘇圍巾', 'assets/images/product/scarf.jpg', '搭配秋冬服飾不會顯得沉重，反而帶來溫和而優雅的氛圍。', 499)">查看內容</button>
+        </div>
+        <div class="product-card" data-category="accessories">
+          <img src="assets/images/product/cap.jpg" alt="商品圖片">
+          <h3>鴨舌帽</h3>
+          <p>素色簡約</p>
+          <p>還能夠遮陽</p>
+          <p class="price">NT$ 120</p>
+          <label for="Q-cap">數量：</label>
+          <input type="number" id="Q-cap" value="1" min="1" style="width: 50px;">
+          <button onclick="addToCart('鴨舌帽', 120,'Q-cap')">加入購物車</button>
+          <button onclick="view('鴨舌帽', 'assets/images/product/cap.jpg', '輕量輕盈，配戴時毫無壓迫感，且透氣性極佳', 120)">查看內容</button>
+        </div>
+        <div class="product-card" data-category="bottom">
+          <img src="assets/images/product/jeans.jpg" alt="商品圖片">
+          <h3>彈性牛仔褲</h3>
+          <p>窄褲筒，修身纖細</p>
+          <p>有彈性纖維</p>
+          <p class="price">NT$ 350</p>
+          <label for="Q-jeans">數量：</label>
+          <input type="number" id="Q-jeans" value="1" min="1" style="width: 50px;">
+          <button onclick="addToCart('彈性牛仔褲', 350,'Q-jeans')">加入購物車</button>
+          <button onclick="view('彈性牛仔褲', 'assets/images/product/jeans.jpg', '百搭窄管褲型，高彈性無拘束感', 359)">查看內容</button>
+        </div>
+        <div class="product-card" data-category="bottom">
+          <img src="assets/images/product/long_skirt.jpg" alt="商品圖片">
+          <h3>長裙</h3>
+          <p>舒適透氣</p>
+          <p>春季暖色系</p>
+          <p class="price">NT$ 399</p>
+          <label for="Q-longSkirt">數量：</label>
+          <input type="number" id="Q-longSkirt" value="1" min="1" style="width: 50px;">
+          <button onclick="addToCart('長裙', 399, 'Q-longSkirt')">加入購物車</button>
+          <button onclick="view('基本T恤', 'assets/images/product/long_skirt.jpg', '擁有十足份量感的細褶長裙，整個腰間均採用鬆緊帶，穿脫方便。', 399)">查看內容</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 商品詳細內容 -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeView()">關閉</span>
+      <h2 id="pTitle">商品名稱</h2>
+      <img id="pImg" src="" alt="商品圖片" />
+      <p id="pIntro">商品詳細資訊</p>
+      <p>$<span id="pPrice"></span></p>
+      <label for="quantity-modal">數量：</label>
+      <input type="number" id="quantity-modal" value="1" min="1" type="hidden" style="width: 50px;">
+      <button onclick="addToCartFromModal()">加入購物車</button>
+      <h3>評價</h3>
+      <div id="reviewContainer"></div>
+      <h4>留言</h4>
+      <textarea id="reviewComment" placeholder="撰寫評論"></textarea>
+      <div class="rating">
+        <input type="radio" id="star1" name="rating" value="5">
+        <label for="star1" title="1 star">&#9733;</label>
+        <input type="radio" id="star2" name="rating" value="4">
+        <label for="star2" title="2 stars">&#9733;</label>
+        <input type="radio" id="star3" name="rating" value="3">
+        <label for="star3" title="3 stars">&#9733;</label>
+        <input type="radio" id="star4" name="rating" value="2">
+        <label for="star4" title="4 stars">&#9733;</label>
+        <input type="radio" id="star5" name="rating" value="1">
+        <label for="star5" title="5 stars">&#9733;</label>
+      </div>
+      <button onclick="submitReview()">提交評論</button>
+    </div>
+  </div>
+  
+  <div id="about" class="page">
+    <section>
+      <h2 class="section-title">商店簡介</h2>
+      <p>這裡是 MyClothes 買衣網！提供多樣大眾款式的服飾。</p>
+      <p>我們的目標是滿足所有顧客的需求，並持續推出新產品！</p>
+    </section>
+    
+    <section>
+      <h2 class="section-title">經營理念</h2>
+      <p>MyClothes 以簡單樸素為主格調，希望能讓所有人放鬆下來。</p>
+      <p>提供好品質，保證讓顧客穿上好商品。</p>
+    </section>
+    
+    <section class="fb-section">
+      <h2 class="section-title">給我們意見</h2>
+      <p>如果有任何建議或意見，歡迎在下方告訴我們！</p>
+      <form>
+        <label for="feedback">意見回饋：</label>
+        <textarea id="feedback" name="feedback" rows="4" required></textarea>
+        <button>提交</button>
+      </form>
+    </section>
+
+    <section class="group">
+      <h2 class="section-title">組員們</h2>
+      <div class="group-container">
+        <div class="mate-card">
+          <img src="assets/images/mate/20230528_182658.jpg" alt="吳柏偉的大頭照" class="mate-photo">
+          <h3 class="mate-name">吳柏偉</h3>
+          <p class="mate-intro">
+            這次負責期末專案的大部分工程，尤其是 JavaScript 的部分，一直在修 code，得到了很多經驗。
+            一定要先想好到底要做些甚麼才開始寫程式，不然都在加加減減試錯好多東西。像處理購物車和帳戶的部分就讓我頭痛，
+            常常抓不到資料，怎麼甚麼都顯示不出來。希望之後可以更好應對網站架設。
+          </p>
+        </div>
+    
+        <div class="mate-card">
+          <img src="assets/images/mate/153206.jpg" alt="許坤瓏的大頭照" class="mate-photo">
+          <h3 class="mate-name">許坤瓏</h3>
+          <p class="mate-intro">
+            參加這次網頁設計專案，對我來說是一個很好的學習機會。雖然沒有直接負責技術部分，但我從中了解了網頁設計的流程，
+            也學到了許多新知識，例如如何考慮使用者需求和設計細節。過程中，我深刻感受到團隊合作的重要性。每個人各自貢獻專長，
+            最後一起完成專案，這種成就感讓我印象深刻。這次經驗不僅讓我對網頁設計有更多興趣，也激勵我未來想要學習更多相關的技能。
+          </p>
+        </div>
+    
+        <div class="mate-card">
+          <img src="assets/images/mate/S__41000967.jpg" alt="詹崇翊的大頭照" class="mate-photo">
+          <h3 class="mate-name">詹崇翊</h3>
+          <p class="mate-intro">
+            這次期末專案一開始是決定做賣食物的，但總感覺網購食品缺乏創意且沒辦法想出更多點子。
+            當時正值秋冬換季，所以我們決定做網購衣服飾品的網站。因為衣服有分尺寸、顏色，甚至還有上身和下身之分，
+            可以讓專案有更多的變化。這次專案讓我學到了很多，像助教課所教的五顆星評價是我最有印象的也覺得最有趣。
+            希望以後能用到多媒體所學到的東西。
+          </p>
+        </div>
+      </div>
+    </section>    
+  </div>
+  </main>
+
+  <footer>
+    <p>@MyClothes買衣網 - 期末實作</p>
+  </footer>
+</body>
+</html>
